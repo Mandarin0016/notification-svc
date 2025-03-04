@@ -74,4 +74,11 @@ public class NotificationController {
                 .status(HttpStatus.OK)
                 .body(notificationHistory);
     }
+
+    //  Endpoint: GET /api/v1/notifications/test  = "Hello, unknown user!"
+    @GetMapping("/test")
+    public ResponseEntity<String> getHelloWorld(@RequestParam(name = "name") String name) {
+
+        return ResponseEntity.ok("Hello, " + name + " user!");
+    }
 }
