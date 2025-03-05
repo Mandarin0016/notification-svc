@@ -38,7 +38,6 @@ public class DtoMapper {
                 .subject(entity.getSubject())
                 .status(entity.getStatus())
                 .createdOn(entity.getCreatedOn())
-                .type(entity.getType())
                 .build();
     }
 }
