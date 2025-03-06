@@ -57,7 +57,7 @@ public class NotificationService {
         NotificationPreference notificationPreference = NotificationPreference.builder()
                 .userId(dto.getUserId())
                 .type(DtoMapper.fromNotificationTypeRequest(dto.getType()))
-                .isEnabled(dto.isNotificationEnabled())
+                .enabled(dto.isNotificationEnabled())
                 .contactInfo(dto.getContactInfo())
                 .createdOn(LocalDateTime.now())
                 .updatedOn(LocalDateTime.now())
@@ -109,5 +109,12 @@ public class NotificationService {
     public List<Notification> getNotificationHistory(UUID userId) {
 
         return notificationRepository.findAllByUserIdAndDeletedIsFalse(userId);
+    }
+
+    public NotificationPreference changeNotificationPreference(UUID userId, boolean enabled) {
+
+        NotificationPreference notificationPreference = getPreferenceByUserId(userId);
+        notificationPreference.setEnabled(enabled);
+        return preferenceRepository.save(notificationPreference);
     }
 }
