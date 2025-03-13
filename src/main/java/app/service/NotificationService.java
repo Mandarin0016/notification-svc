@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -116,5 +117,44 @@ public class NotificationService {
         NotificationPreference notificationPreference = getPreferenceByUserId(userId);
         notificationPreference.setEnabled(enabled);
         return preferenceRepository.save(notificationPreference);
+    }
+
+    public void clearNotifications(UUID userId) {
+
+        List<Notification> notifications = getNotificationHistory(userId);
+
+        notifications.forEach(notification -> {
+            notification.setDeleted(true);
+            notificationRepository.save(notification);
+        });
+    }
+
+    public void retryFailedNotifications(UUID userId) {
+
+        NotificationPreference userPreference = getPreferenceByUserId(userId);
+        if (!userPreference.isEnabled()) {
+            throw new IllegalArgumentException("User with id %s does not allow to receive notifications.".formatted(userId));
+        }
+
+        List<Notification> failedNotifications = notificationRepository.findAllByUserIdAndStatus(userId, NotificationStatus.FAILED);
+        failedNotifications = failedNotifications.stream().filter(notification ->  !notification.isDeleted()).toList();
+
+        for (Notification notification : failedNotifications) {
+
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(userPreference.getContactInfo());
+            message.setSubject(notification.getSubject());
+            message.setText(notification.getBody());
+
+            try {
+                mailSender.send(message);
+                notification.setStatus(NotificationStatus.SUCCEEDED);
+            } catch (Exception e) {
+                notification.setStatus(NotificationStatus.FAILED);
+                log.warn("There was an issue sending an email to %s due to %s.".formatted(userPreference.getContactInfo(), e.getMessage()));
+            }
+
+            notificationRepository.save(notification);
+        }
     }
 }
