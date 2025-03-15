@@ -3,11 +3,10 @@ package app.web;
 import app.model.Notification;
 import app.model.NotificationPreference;
 import app.service.NotificationService;
-import app.web.dto.NotificationPreferenceResponse;
-import app.web.dto.NotificationRequest;
-import app.web.dto.NotificationResponse;
-import app.web.dto.UpsertNotificationPreference;
+import app.web.dto.*;
 import app.web.mapper.DtoMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/notifications")
+@Tag(name = "Notification Management", description = "Operations related to notifications")
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -27,6 +27,7 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
+    @Operation(summary = "Create new Notification Preference", description = "Returns the created notification preference.")
     @PostMapping("/preferences")
     public ResponseEntity<NotificationPreferenceResponse> upsertNotificationPreference(@RequestBody UpsertNotificationPreference upsertNotificationPreference) {
 
