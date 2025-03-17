@@ -114,6 +114,8 @@ public class NotificationService {
 
     public NotificationPreference changeNotificationPreference(UUID userId, boolean enabled) {
 
+        // If exist - return NotificationPreference
+        // If does not exist - throws exception
         NotificationPreference notificationPreference = getPreferenceByUserId(userId);
         notificationPreference.setEnabled(enabled);
         return preferenceRepository.save(notificationPreference);
