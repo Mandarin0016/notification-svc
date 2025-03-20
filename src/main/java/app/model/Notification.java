@@ -14,6 +14,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "notifications")
 public class Notification {
 
     @Id
@@ -39,5 +40,5 @@ public class Notification {
 
     private UUID userId;
 
-    private boolean isDeleted;
+    private boolean deleted;
 }

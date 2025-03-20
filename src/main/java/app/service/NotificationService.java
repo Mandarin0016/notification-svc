@@ -92,7 +92,7 @@ public class NotificationService {
                 .body(notificationRequest.getBody())
                 .createdOn(LocalDateTime.now())
                 .userId(userId)
-                .isDeleted(false)
+                .deleted(false)
                 .type(NotificationType.EMAIL)
                 .build();
 

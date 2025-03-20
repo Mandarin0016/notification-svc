@@ -15,7 +15,7 @@ public interface NotificationRepository extends JpaRepository<Notification, UUID
 
 
     @Query("""
-            SELECT n FROM Notification n WHERE n.userId = :userId AND n.isDeleted = false
+            SELECT n FROM Notification n WHERE n.userId = :userId AND n.deleted = false
             """)
     List<Notification> findAllByUserIdAndDeletedIsFalse(@Param("userId") UUID userId);
 

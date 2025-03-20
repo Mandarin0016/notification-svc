@@ -1,12 +1,14 @@
 package app.web.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
 
 // DTO = contract
 @Data
+@Builder
 public class UpsertNotificationPreference {
 
     @NotNull
