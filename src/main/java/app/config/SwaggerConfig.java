@@ -16,7 +16,7 @@ public class SwaggerConfig {
         Info applicationInfo = new Info()
                 .title("Notification REST API")
                 .description("REST API Designed to operate with user notifications.")
-                .version("2.0")
+                .version("1.0")
                 .contact(new Contact()
                         .name("Viktor Aleksandrov")
                         .email("viktor.aleksandrov@gmail.com")
